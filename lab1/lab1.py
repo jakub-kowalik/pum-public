@@ -16,6 +16,7 @@ D      0
 
 """
 import random
+import matplotlib.pyplot as plt
 
 punkty = [[100, 100, 50]]
 
@@ -41,6 +42,15 @@ def adjacency_matrix_generator(vertices_list):
     return adjacency_matrix
 
 
+def visualize_cities(vertices_list):
+    xs, ys, zs = zip(*vertices_list)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+    ax.scatter(xs, ys, zs)
+    plt.show()
+
+
 if __name__ == '__main__':
     cities = list()
     for i in range(0, 5):
@@ -50,3 +60,6 @@ if __name__ == '__main__':
 
     for x in matrix:
         print(x)
+
+
+    visualize_cities(cities)
