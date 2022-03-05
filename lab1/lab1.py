@@ -1,16 +1,21 @@
-# This is a sample Python script.
+"""
+1. Genorowanie miast
+2. Obliczanie dystansu pomiedzy miastami
+3. Wizualizacja
+4. Algorytm DFS
+5. Algorytm BFS
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+1. X, Y, Z
+"""
+import random
+
+punkty = [[100, 100, 50]]
+
+def city_generator():
+    return [random.randint(-100, 100), random.randint(-100, 100), random.randint(0, 50)]
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    for i in range(0, 10):
+        print(city_generator())
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
