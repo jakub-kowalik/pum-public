@@ -39,16 +39,33 @@ def adjacency_matrix_generator(vertices_list):
             else:
                 matrix_row.append(city_distance(i, j))
         adjacency_matrix.append(matrix_row)
-    return adjacency_matrix
+    return (vertices_list, adjacency_matrix)
 
 
-def visualize_cities(vertices_list):
+def visualize_cities(vertices_list, path=None):
     xs, ys, zs = zip(*vertices_list)
 
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     ax.scatter(xs, ys, zs)
+
+    if path is not None:
+        px, py, pz = zip(*path)
+        ax.plot(px, py, pz)
+
     plt.show()
+
+
+def dfs_alghoritm(adjacency_matrix, start, visited, vertices):
+    print("node ", adjacency_matrix[0][start])
+    if adjacency_matrix[1][start] not in visited:
+        visited.append(adjacency_matrix[1][start])
+        vertices.append(adjacency_matrix[0][start])
+        for i in range(start, len(adjacency_matrix[1])):
+            if adjacency_matrix[1][start][i] is not None:
+                if adjacency_matrix[1][start][i] not in visited:
+                    dfs_alghoritm(adjacency_matrix, i, visited, vertices)
+    return visited, vertices
 
 
 if __name__ == '__main__':
@@ -58,8 +75,11 @@ if __name__ == '__main__':
 
     matrix = adjacency_matrix_generator(cities)
 
-    for x in matrix:
+    # print(matrix)
+    for x in matrix[1]:
         print(x)
 
-
-    visualize_cities(cities)
+    answer = dfs_alghoritm(matrix, 0, list(), list())
+    print(answer[1])
+    answer[1].append(answer[1][0])
+    visualize_cities(cities, answer[1])
