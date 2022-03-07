@@ -18,6 +18,8 @@ D      0
 import random
 import matplotlib.pyplot as plt
 
+random.seed(1234)
+
 punkty = [[100, 100, 50]]
 
 
@@ -50,27 +52,38 @@ def visualize_cities(vertices_list, path=None):
     ax.scatter(xs, ys, zs)
 
     if path is not None:
-        px, py, pz = zip(*path)
-        ax.plot(px, py, pz)
+        for i in range(len(path) - 1):
+            plt.plot([path[i][0], path[i + 1][0]],
+                     [path[i][1], path[i + 1][1]],
+                     [path[i][2], path[i + 1][2]])
 
     plt.show()
 
 
-def dfs_alghoritm(adjacency_matrix, start, visited, vertices):
-    print("node ", adjacency_matrix[0][start])
-    if adjacency_matrix[1][start] not in visited:
-        visited.append(adjacency_matrix[1][start])
-        vertices.append(adjacency_matrix[0][start])
-        for i in range(start, len(adjacency_matrix[1])):
-            if adjacency_matrix[1][start][i] is not None:
-                if adjacency_matrix[1][start][i] not in visited:
-                    dfs_alghoritm(adjacency_matrix, i, visited, vertices)
-    return visited, vertices
+def dfs_alghoritm(paths, vertices, start, visited=None):
+    if visited is None:
+        visited = list()
+    print("node ", start)
+    if start not in visited:
+        visited.append(start)
+
+        possible_next = list()
+        for x in vertices:
+            if x is not start and x not in visited:
+                possible_next.append(x)
+
+        for x in possible_next:
+            dfs_alghoritm(paths, vertices, x, list(visited))
+
+    if len(vertices) == len(visited):
+        if visited not in paths:
+            paths.append(visited)
+    return visited
 
 
 if __name__ == '__main__':
     cities = list()
-    for i in range(0, 5):
+    for i in range(0, 3):
         cities.append(city_generator())
 
     matrix = adjacency_matrix_generator(cities)
@@ -79,7 +92,8 @@ if __name__ == '__main__':
     for x in matrix[1]:
         print(x)
 
-    answer = dfs_alghoritm(matrix, 0, list(), list())
-    print(answer[1])
-    answer[1].append(answer[1][0])
-    visualize_cities(cities, answer[1])
+    all_pathes = list()
+
+    answer = dfs_alghoritm(all_pathes, cities, cities[0])
+    print(all_pathes)
+    visualize_cities(cities, all_pathes[0])
